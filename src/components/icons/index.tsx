@@ -10,3 +10,8 @@ export { default as ProductBag } from './ProductBag'
 export { default as TGLogo } from './TG-logo'
 export { default as InstaLogo } from './Insta'
 export { default as TwitterLogo } from './Twitter'
+export { default as HomeIcon } from './Home'
+export { default as SecurityIcon } from './SecurityIcon'
+export { default as CarIcon } from './CarIcon'
+export { default as ArrowDown } from './ArrowDown'
+

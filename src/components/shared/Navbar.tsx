@@ -13,9 +13,10 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { ModeToggle } from "./mode-toggle";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
-    const [isActiveMenu, setIsActiveMenu] = React.useState(true)
+    const [isActiveMenu, setIsActiveMenu] = React.useState(false)
     const { t, i18n } = useTranslation();
 
     const changeLanguage = (lng: string) => {
@@ -63,7 +64,7 @@ const Navbar = () => {
                 <div className="container py-4 mx-auto flex justify-between items-center">
                     <img src="/vite.svg" alt="Vite Logo" />
                     <Button onClick={() => setIsActiveMenu(!isActiveMenu)}>{t('Каталог товаров')}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M13.5 2H6m5 5H3.5m5 5h-8" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M13.5 2H6m5 5H3.5m5 5h-8" /></svg>
                     </Button>
                     <div className="relative">
                         <Input className="w-[600px] pr-8" type="email" placeholder={t('search')} />
@@ -72,7 +73,9 @@ const Navbar = () => {
 
                     <div className="flex items-center gap-4">
                         <Heart />
-                        <Bag />
+                        <Link to={'/products/cart'}>
+                            <Bag />
+                        </Link>
                         <Scales />
                         <User />
                     </div>

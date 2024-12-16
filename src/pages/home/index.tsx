@@ -9,15 +9,13 @@ import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from 'uuid';
 import { useWindowScroll } from 'react-use';
 import { Link } from "react-router-dom"
-
+import { TextEffect } from "@/components/ui/text-effect"
 
 const Home = () => {
     const { x, y } = useWindowScroll();
-
     const [bgColor, setBgColor] = React.useState('#000')
     const [active, setActive] = React.useState(0)
     const { t } = useTranslation()
-
     const colors = ['#2C3E50', '#1ABC9C', '#F39C12', '#8E44AD', ' #F1C40F', '#95A5A6', 'orange']
 
     const random = () => {

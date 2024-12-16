@@ -3,6 +3,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Heart, ProductBag, Scales } from '@/components/icons'
 import { useAudio } from "react-use"
 import mp3 from '/music/mp3.mp3'
+import { Link } from "react-router-dom"
+import React from "react"
+import { ProductsContext } from "@/store/products"
 
 type ProductTypes = {
     name: string,
@@ -16,7 +19,19 @@ const ProductCard = ({ data }: ProductTypes) => {
         src: mp3,
         autoPlay: true,
     });
+
+    const { addToCart } = React.useContext(ProductsContext)
+
+    const link = () => {
+        return data.name.replace('%20', ' ')
+    }
+
+    // React.useEffect(() => {
+    //     console.log(link(), 'hello');
+    // }, [])
+
     return (
+        // <Link to={`/product/${link()}`}>
         <Card>
             <CardContent className="relative">
                 <div className="flex items-center gap-2 absolute right-2 top-2">
@@ -30,11 +45,12 @@ const ProductCard = ({ data }: ProductTypes) => {
 
                 <div className="grid grid-cols-4 gap-2 mt-4">
                     <Button variant="outline" className="col-span-3">Buy now</Button>
-                    <Button onClick={controls.play}> <ProductBag /> </Button>
+                    <Button onClick={() => addToCart(data)}> <ProductBag /> </Button>
                 </div>
                 {audio}
             </CardContent>
         </Card>
+        // </Link>
     )
 }
 
