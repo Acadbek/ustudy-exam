@@ -14,4 +14,5 @@ export { default as HomeIcon } from './Home'
 export { default as SecurityIcon } from './SecurityIcon'
 export { default as CarIcon } from './CarIcon'
 export { default as ArrowDown } from './ArrowDown'
+export { default as DeleteIcon } from './DeleteIcon'
 

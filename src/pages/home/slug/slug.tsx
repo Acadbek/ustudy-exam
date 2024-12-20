@@ -50,9 +50,19 @@ import {
 import { Input } from "@/components/ui/input"
 import ProductCard from "@/components/shared/cards/ProductCard";
 import ScrollToTop from "@/components/shared/ScrollToTop";
+import { formatPrice } from "@/utils";
+import axios from "axios";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel"
 
 const ProductSlug = () => {
     const [activeImg, setActiveImg] = React.useState(1)
+    const [product, setProduct] = React.useState({})
     const [buyType, setBuyType] = React.useState('Полная оплата')
     const [popoverContentStatus, setPopoverContentStatus] = React.useState(true)
     const [isOpen, setIsOpen] = React.useState(false)
@@ -121,11 +131,21 @@ const ProductSlug = () => {
     ]
 
     let mainPage = location.pathname.split('/')[1]
-    let productName = location.pathname.split('/')[2].replace('%20', ' ')
+    let id = location.pathname.split('/')[2].replace('%20', ' ')
 
-    function formatPrice(number: number) {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const getSingleProduct = async () => {
+        try {
+            const response = await axios(`http://localhost:3000/products/${id}`)
+            setProduct(response.data)
+        } catch (error) {
+            alert(error)
+        }
     }
+
+    React.useEffect(() => {
+        getSingleProduct()
+    }, [id])
+
 
     // const monthlyPrice = () => {
     //     frameworks.forEach(v => {
@@ -161,7 +181,7 @@ const ProductSlug = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage className="capitalize">{productName}</BreadcrumbPage>
+                            <BreadcrumbPage className="capitalize">{product.name}</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
@@ -197,19 +217,39 @@ const ProductSlug = () => {
                 </div>
                 <div className="grid grid-cols-4 gap-3 mt-8">
                     <div className="col-span-3 ">
-                        <h2 className="text-3xl pl-8 mb-8 font-semibold">{productName}</h2>
+                        {/* <h2 className="text-3xl pl-8 mb-8 font-semibold">{productName}</h2> */}
                         <div className="flex gap-6">
                             <div className="flex flex-col gap-2">
-                                <div onClick={() => setActiveImg(1)} style={{
-                                    border: activeImg === 1 && '2px solid #16a34a'
-                                }} className="w-[90px] p-1 rounded-lg border-[2px] cursor-pointer">
-                                    <img className="w-[90px] h-[90px] object-cover rounded-lg" src="/q.jpg" alt="" />
-                                </div>
-                                <div onClick={() => setActiveImg(2)} style={{
-                                    border: activeImg === 2 && '2px solid #16a34a'
-                                }} className="border-2 w-[90px] p-1 border-[2px] rounded-lg cursor-pointer">
-                                    <img className="w-[90px] h-[90px] object-cover rounded-lg" src="/q2.webp" alt="" />
-                                </div>
+                                <Carousel
+                                    opts={{
+                                        align: "start",
+                                    }}
+                                    orientation="vertical"
+                                    className="w-full max-w-xs"
+                                >
+                                    <CarouselContent className="h-[300px] mt-1">
+                                        {product.image && product.image.map((img, index) => (
+                                            <CarouselItem
+                                                onClick={() => setActiveImg(index + 1)}
+                                                key={index}
+                                                className="w-[90px] p-1 rounded-lg border-[2px] cursor-pointer mt-2"
+                                                style={{ border: activeImg === (index + 1) && '2px solid #16a34a' }}
+                                            >
+                                                <img className="w-[90px] h-[90px] object-cover rounded-lg" src={img} alt="" />
+                                            </CarouselItem>
+                                        ))}
+                                    </CarouselContent>
+                                    <CarouselPrevious />
+                                    <CarouselNext />
+                                </Carousel>
+                                {/* {product.image && product.image.map((img, index) => (
+                                    <div
+                                        onClick={() => setActiveImg(index + 1)}
+                                        style={{ border: activeImg === (index + 1) && '2px solid #16a34a' }}
+                                        className="w-[90px] p-1 rounded-lg border-[2px] cursor-pointer">
+                                        <img className="w-[90px] h-[90px] object-cover rounded-lg" src={img} alt="" />
+                                    </div>
+                                ))} */}
                             </div>
                             <div className="max-w-[1000px] w-full">
                                 <LightGallery
@@ -217,12 +257,11 @@ const ProductSlug = () => {
                                     plugins={[lgThumbnail, lgFullscreen, lgZoom]}
                                     fullScreen={true}
                                 >
-                                    {activeImg === 1 && <a href="/q.jpg">
-                                        <img className="h-[300px] w-[500px] object-cover" alt="img1" src="/q.jpg" />
-                                    </a>}
-                                    {activeImg === 2 && <a href="/q2.webp">
-                                        <img width={600} className="h-[300px] w-[500px] object-cover" alt="img2" src="/q2.webp" />
-                                    </a>}
+                                    {product.image && product.image.map((img, index) => (
+                                        activeImg === (index + 1) && <a href={img}>
+                                            <img className="h-[300px] w-[500px] object-cover" alt="img1" src={img} />
+                                        </a>
+                                    ))}
                                 </LightGallery>
                             </div>
                             <div className="w-full flex flex-col gap-3">
@@ -258,7 +297,7 @@ const ProductSlug = () => {
                                     <TabsTrigger value="password">{t('Характеристики')}</TabsTrigger>
                                 </TabsList>
                                 <TabsContent className="mt-8" value="account">
-                                    Смартфон <strong>{productName}</strong> — модель в корпусе из пластика. Работа производится на базе ОС Android версии 13.0. Возможна установка двух карт формата nano-SIM. Восьмиядерный процессор UMS9230 от Unisoc с частотой 8х1,6 ГГц и оперативная память на 3 Гб не допускают задержек во время запуска приложений и переключения между ними. Хранение файлов осуществляется во встроенной памяти объемом 64 Гб, которую можно расширять посредством карты microSD/TF (1 Тб).
+                                    {/* Смартфон <strong>{productName}</strong> — модель в корпусе из пластика. Работа производится на базе ОС Android версии 13.0. Возможна установка двух карт формата nano-SIM. Восьмиядерный процессор UMS9230 от Unisoc с частотой 8х1,6 ГГц и оперативная память на 3 Гб не допускают задержек во время запуска приложений и переключения между ними. Хранение файлов осуществляется во встроенной памяти объемом 64 Гб, которую можно расширять посредством карты microSD/TF (1 Тб). */}
                                     <span className="!block mt-4">Устройство оборудовано сенсорным экраном типа LCD диагональю 6,6 дюйма разрешением 1612х720 пикселей. Максимальная частота обновления составляет 90 Гц. Смартфон поддерживает стандарты сотовой связи 2G, 3G, 4G. Быструю беспроводную связь с устройствами с целью передачи данных обеспечивает модуль Bluetooth версии 5.0, Wi-Fi гарантирует быстрый выход в Сеть.</span>
                                 </TabsContent>
                                 <TabsContent className="mt-8" value="password">

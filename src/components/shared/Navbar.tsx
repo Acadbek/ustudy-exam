@@ -62,7 +62,9 @@ const Navbar = () => {
                     </div>
                 </div>
                 <div className="container py-4 mx-auto flex justify-between items-center">
-                    <img src="/vite.svg" alt="Vite Logo" />
+                    <Link to='/'>
+                        <img src="/vite.svg" alt="Vite Logo" />
+                    </Link>
                     <Button onClick={() => setIsActiveMenu(!isActiveMenu)}>{t('Каталог товаров')}
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" d="M13.5 2H6m5 5H3.5m5 5h-8" /></svg>
                     </Button>

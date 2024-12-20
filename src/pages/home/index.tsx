@@ -9,12 +9,15 @@ import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from 'uuid';
 import { useWindowScroll } from 'react-use';
 import { Link } from "react-router-dom"
-import { TextEffect } from "@/components/ui/text-effect"
+import { TextEffect } from "@/components/ui/text-effect";
+import axios from 'axios'
+import { ProductsContext } from "@/store/products"
 
 const Home = () => {
     const { x, y } = useWindowScroll();
     const [bgColor, setBgColor] = React.useState('#000')
     const [active, setActive] = React.useState(0)
+    const { products } = React.useContext(ProductsContext)
     const { t } = useTranslation()
     const colors = ['#2C3E50', '#1ABC9C', '#F39C12', '#8E44AD', ' #F1C40F', '#95A5A6', 'orange']
 
@@ -65,46 +68,7 @@ const Home = () => {
             bgColor: 'pink'
         },
     ]
-
-    const products = [
-        {
-            name: "Wireless Headphones",
-            brand: "SoundPro",
-            price: 49.99,
-            image: "https://example.com/images/headphones.jpg"
-        },
-        {
-            name: "Smartphone",
-            brand: "Apple",
-            price: 999.99,
-            image: "https://example.com/images/iphone.jpg"
-        },
-        {
-            name: "Laptop",
-            brand: "Dell",
-            price: 1299.99,
-            image: "https://example.com/images/laptop.jpg"
-        },
-        {
-            name: "Wireless Headphones",
-            brand: "SoundPro",
-            price: 49.99,
-            image: "https://example.com/images/headphones.jpg"
-        },
-        {
-            name: "Smartphone",
-            brand: "Apple",
-            price: 999.99,
-            image: "https://example.com/images/iphone.jpg"
-        },
-        {
-            name: "Laptop",
-            brand: "Dell",
-            price: 1299.99,
-            image: "https://example.com/images/laptop.jpg"
-        }
-    ]
-
+    
     const discountProducts = [
         {
             id: uuidv4(),

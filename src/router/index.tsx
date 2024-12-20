@@ -14,7 +14,7 @@ const Routers = () => {
                 <Route path="/products/cart" element={<Cart />} />
                 <Route path="/product/:id" element={<ProductSlug />} />
             </Routes>
-            <Footer />
+            {/* <Footer /> */}
         </div>
     )
 }
