@@ -42,6 +42,10 @@ const Cart = () => {
     console.log(type);
   }
 
+  React.useEffect(() => {
+    console.log(lovelyProducts, 'Hello lovelyProducts');
+  }, [])
+
   return (
     <>
       <Navbar />

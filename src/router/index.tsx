@@ -4,6 +4,7 @@ import Snowfall from "react-snowfall"
 import Footer from "@/components/shared/Footer"
 import ProductSlug from "@/pages/home/slug/slug"
 import Cart from "@/pages/home/cart"
+import NotFound from "@/pages/home/NotFound"
 
 const Routers = () => {
     return (
@@ -13,6 +14,7 @@ const Routers = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/products/cart" element={<Cart />} />
                 <Route path="/product/:id" element={<ProductSlug />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
             {/* <Footer /> */}
         </div>
